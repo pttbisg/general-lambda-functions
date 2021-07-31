@@ -19,13 +19,18 @@ const getInventoryByUserIDLambdaFunc = async(event) => {
             data: event,
         });
 
-        const body = JSON.parse(event.body);
+        // const body = JSON.parse(event.body);
+        const body = event;
 
         const result = await inventoryService.getInventoryByUserID(body.userObjectID);
-
+        
+        // let res = {
+        //     statusCode: 200,
+        //     body: JSON.stringify(result),
+        // };
         let res = {
             statusCode: 200,
-            body: JSON.stringify(result),
+            body: result,
         };
       
         console.log({
