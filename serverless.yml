@@ -24,6 +24,14 @@ functions:
           method: GET
           cors: true
 
+  getInventoryByUserID:
+    handler: inventory.getInventoryByUserIDLambdaFunc
+    events:
+      - http:
+          path: /inventory
+          method: POST
+          cors: true
+
 plugins:
   - serverless-offline
   - serverless-dotenv-plugin
