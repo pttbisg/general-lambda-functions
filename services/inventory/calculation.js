@@ -1,10 +1,7 @@
 "use strict";
 
 const assert = require("assert");
-
-const DEFAULT_INBOUND_CURRENT_LOCATION = "";
-const DEFAULT_OUTBOUND_REASON = "";
-const DEFAULT_OUTBOUND_ISGORDER_STORE_NAME = "";
+const _ = require('lodash')
 
 async function shard(
     skuMatchings,
@@ -18,190 +15,83 @@ async function shard(
         assert(typeof(skuOutboundISGOrders) === "object");
         assert(typeof(skuOutbounds) === "object");
 
-
         let responsePayload = [];
 
         for(let i = 0; i < skuMatchings.length; i++) {
-        let sku = {
-            "masterSKU": skuMatchings[i].masterSKU,
-            "inventory_details": {
-            "inbounds": [],
-            "sales": [],
-            "other_use": [],
-            },
-            "balance_stock_left": 0,
+            let sku = {
+                "masterSKU": skuMatchings[i].masterSKU,
+                "inventory_details": {
+                "inbounds": [],
+                "sales": [],
+                "other_use": [],
+                },
+                "balance_stock_left": 0,
+            }
+
+            const inbounds = await createInboundResponsePayload(skuInbounds);
+
+            sku['inventory_details']['inbounds'] = inbounds;
+
+            const sales = await createOutboundISGOrderResponsePayload(skuOutboundISGOrders);
+
+            sku['inventory_details']['sales'] =  sales;
+
+            const otherUse = await createOutboundResponsePayload(skuOutbounds);
+            
+            sku['inventory_details']['other_use'] = otherUse;
+
+            sku['balance_stock_left'] = await calculateBalanceStockLeft(inbounds, sales, otherUse);
+
+            responsePayload.push(sku);
         }
 
-        const inbounds = await createInboundResponsePayload(
-            createInboundInventoryDetails(skuInbounds),
-        );
-
-        sku['inventory_details']['inbounds'] = inbounds;
-
-        const sales = await createOutboundISGOrderResponsePayload(
-            createOutboundISGOrderInventoryDetails(skuOutboundISGOrders)
-        );
-
-        sku['inventory_details']['sales'] =  sales;
-
-        const otherUse = await createOutboundResponsePayload(
-            createOutboundInventoryDetails(skuOutbounds)
-        );
-        
-        sku['inventory_details']['other_use'] = otherUse;
-
-        sku['balance_stock_left'] = await calculateBalanceStockLeft(inbounds, sales, otherUse);
-
-        responsePayload.push(sku);
-    }
-
-    return responsePayload;
+        return responsePayload;
 
     } catch(err) {
         throw err;
     }
 }
 
-function createInboundInventoryDetails(inbounds) {
-    assert(typeof(inbounds) === "object");
-
-    let result = {}
-
-    for (let i = 0; i < inbounds.length; i++) {
-        let currentLocation = inbounds[i].CurrentLocation;
-
-        let date = convertEpochToDate(inbounds[i].Actual_Received_Date);
-
-        let qty = inbounds[i].Qty_new_received;
-
-        if (currentLocation == null) {
-            currentLocation = DEFAULT_INBOUND_CURRENT_LOCATION;
-        }
-
-        if(result.hasOwnProperty(currentLocation) == false) {
-            result[currentLocation] = {};
-        }
-
-        if (result[currentLocation][date] == undefined) {
-            result[currentLocation][date] = 0;
-        }
-
-        if (qty == null) {
-            qty = 0;
-        }
-
-        result[currentLocation][date] += parseInt(qty);
-    }
-
-    return result
-}
-
-function createInboundResponsePayload(resInbounds) {
-    assert(typeof(resInbounds) === "object");
+function createInboundResponsePayload(skuInbounds) {
+    assert(typeof(skuInbounds) === "object");
 
     let result = [];
 
-    const listKey = Object.keys(resInbounds);
-
-    for(let i = 0; i < listKey.length; i++) {
-        const listDate = Object.keys(resInbounds[listKey[i]]);
-
-        for(let j = 0; j < listDate.length; j++) {
-            result.push({
-                'date': listDate[j],
-                'current_location': listKey[i],
-                'qty': resInbounds[listKey[i]][listDate[j]],
-            });
-        }
-    }
-
-    return result
-}
-
-function createOutboundInventoryDetails(outbounds) {
-    assert(typeof(outbounds) === "object");
-
-    let result = {}
-
-    for (let i = 0; i < outbounds.length; i++) {
-        let reason = outbounds[i].Reason;
-
-        let qty = outbounds[i].Qty;
-
-        if (reason == null) {
-            reason = DEFAULT_OUTBOUND_REASON;
-        }
-
-        if(result.hasOwnProperty(reason) == false) {
-            result[reason] = 0;
-        }
-
-        if (qty == null) {
-            qty = 0;
-        }
-
-        result[reason] += parseInt(qty);
-    }
-
-    return result
-}
-
-function createOutboundResponsePayload(resOutbounds) {
-    assert(typeof(resOutbounds) === "object");
-
-    let result = [];
-
-    const listKey = Object.keys(resOutbounds);
-
-    for(let i = 0; i < listKey.length; i++) {
+    for(let i = 0; i < skuInbounds.length; i++) {
         result.push({
-        'reason': listKey[i],
-        'qty': resOutbounds[listKey[i]],
+            'date': convertEpochToDate(_.get(skuInbounds[i], "Actual_Received_Date")),
+            'current_location': _.get(skuInbounds[i], "CurrentLocation"),
+            'qty': _.get(skuInbounds[i], "sum"),
+        });
+    }
+
+    return result
+}
+
+function createOutboundResponsePayload(skuOutbounds) {
+    assert(typeof(skuOutbounds) === "object");
+
+    let result = [];
+
+    for(let i = 0; i < skuOutbounds.length; i++) {
+        result.push({
+            'reason': _.get(skuOutbounds[i], "Reason"),
+            'qty': _.get(skuOutbounds[i], "sum"),
         });
     }
 
     return result;
 }
 
-function createOutboundISGOrderInventoryDetails(outbounds) {
-    assert(typeof(outbounds) === "object");
-
-    let result = {}
-
-    for (let i = 0; i < outbounds.length; i++) {
-        let storeName = outbounds[i].Store_Name;
-
-        let qty = outbounds[i].LineitemQty;
-
-        if (storeName == null) {
-            storeName = DEFAULT_OUTBOUND_ISGORDER_STORE_NAME;
-        }
-
-        if(result.hasOwnProperty(storeName) == false) {
-            result[storeName] = 0;
-        }
-
-        if (qty == null) {
-            qty = 0;
-        }
-
-        result[storeName] += parseInt(qty);
-    }
-
-    return result
-}
-
-function createOutboundISGOrderResponsePayload(resOutbounds) {
-    assert(typeof(resOutbounds) === "object");
+function createOutboundISGOrderResponsePayload(skuOutboundISGOrders) {
+    assert(typeof(skuOutboundISGOrders) === "object");
 
     let result = [];
 
-    const listKey = Object.keys(resOutbounds);
-
-    for(let i = 0; i < listKey.length; i++) {
+    for(let i = 0; i < skuOutboundISGOrders.length; i++) {
         result.push({
-        'storename': listKey[i],
-        'qty': resOutbounds[listKey[i]],
+            'storename': _.get(skuOutboundISGOrders[i], "Store_Name"),
+            'qty': _.get(skuOutboundISGOrders[i], "sum"),
         });
     }
 

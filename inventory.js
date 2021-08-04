@@ -1,5 +1,9 @@
 "use strict";
 
+const AWSXray = require('aws-xray-sdk');
+AWSXray.captureHTTPsGlobal(require('http'));
+AWSXray.captureHTTPsGlobal(require('https'));
+
 const {
     BackendlessService,
 } = require('./services/backendless');
@@ -16,22 +20,22 @@ const getInventoryByUserIDLambdaFunc = async(event) => {
     try {
         console.log({
             message: "Incoming request",
-            data: event,
+            data: JSON.parse(event.body),
         });
 
-        // const body = JSON.parse(event.body);
-        const body = event;
+        const body = JSON.parse(event.body);
+        // const body = event;
 
         const result = await inventoryService.getInventoryByUserID(body.userObjectID);
         
-        // let res = {
-        //     statusCode: 200,
-        //     body: JSON.stringify(result),
-        // };
         let res = {
             statusCode: 200,
-            body: result,
+            body: JSON.stringify(result),
         };
+        // let res = {
+        //     statusCode: 200,
+        //     body: result,
+        // };
       
         console.log({
             message: "Outgoing response",

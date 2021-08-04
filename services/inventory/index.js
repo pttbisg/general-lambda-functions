@@ -30,19 +30,23 @@ class InventoryService {
                 skuOutboundISGOrders, 
                 skuOutbounds
             ] = await Promise.all([
-                this.backendlessService.retrieveAllSKUInboundBySKUMatchingOID(userObjectID),
-                this.backendlessService.retrieveAllSKUOutboundISGOrdersBySKUMatchingOID(userObjectID),
-                this.backendlessService.retrieveAllSKUOutboundBySKUMatchingOID(userObjectID),
+                this.backendlessService.calculateSKUInboundQty(userObjectID),
+                this.backendlessService.calculateSKUOutboundISGOrderQty(userObjectID),
+                this.backendlessService.calculateSKUOutboundQty(userObjectID),
             ]);
+
+            // console.log(skuInbounds)
+            // console.log(skuOutboundISGOrders)
+            // console.log(skuOutbounds)
     
             let chunks = _.chunk(skuMatchings, 1);
     
             await Promise.all(chunks.map(async function(element) {
                 let reply = await shard(
                     element,
-                    skuInbounds.filter(e => e.LINK_SKUMatching.objectId==element[0].objectId),
-                    skuOutboundISGOrders.filter(e => e.LINK_SKUMatching.objectId==element[0].objectId),
-                    skuOutbounds.filter(e => e.LINK_SKUMatching.objectId==element[0].objectId)
+                    skuInbounds.filter(e => e.objectId==element[0].objectId),
+                    skuOutboundISGOrders.filter(e => e.objectId==element[0].objectId),
+                    skuOutbounds.filter(e => e.objectId==element[0].objectId)
                 );
     
                 result.push(reply[0]);

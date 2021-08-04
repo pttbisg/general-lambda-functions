@@ -18,38 +18,22 @@ describe('BackendlessService.retrieveAllSKUMatchingByUserOID', () => {
             }
         ]);
 
-        sinon.stub(backendlessService, "retrieveAllSKUInboundBySKUMatchingOID").resolves([
+        sinon.stub(backendlessService, "calculateSKUOutboundISGOrderQty").resolves([
             {
-                CurrentLocation: "current_location",
-                Actual_Received_Date: 1626334264000,
-                Qty_new_received: 1,
-                LINK_SKUMatching: {
-                    masterSKU: 'master-sku',
-                    objectId: 'sku-matching-object-id'
-                },
-            }
+                "___class": "SKU_Outbound_ISGOrders",
+                "Store_Name": 'store.name',
+                "sum": 1,
+                "objectId": 'sku-matching-object-id'
+            },
         ]);
 
-        sinon.stub(backendlessService, "retrieveAllSKUOutboundISGOrdersBySKUMatchingOID").resolves([
+        sinon.stub(backendlessService, "calculateSKUOutboundQty").resolves([
             {
-                Store_Name: 'store.name',
-                LineitemQty: 1,
-                LINK_SKUMatching: {
-                    masterSKU: 'master-sku',
-                    objectId: 'sku-matching-object-id'
-                },
-            }
-        ]);
-
-        sinon.stub(backendlessService, "retrieveAllSKUOutboundBySKUMatchingOID").resolves([
-            {
-                Reason: 'reason',
-                Qty: 1,
-                LINK_SKUMatching: {
-                    masterSKU: 'master-sku',
-                    objectId: 'sku-matching-object-id'
-                },
-            }
+                "___class": "SKU_Outbound",
+                "sum": 1,
+                "Reason": "reason",
+                "objectId": 'sku-matching-object-id'
+            },
         ]);
         
         const inventoryService = new InventoryService(backendlessService);

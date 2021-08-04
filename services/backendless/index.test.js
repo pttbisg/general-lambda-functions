@@ -48,9 +48,17 @@ describe('BackendlessService.retrieveAllSKUMatchingByUserOID', () => {
     });
 });
 
-describe('BackendlessService.retrieveAllSKUInboundBySKUMatchingOID', () => {
+describe('BackendlessService.calculateSKUInboundQty', () => {
+    let backendlessServiceMock;
+    beforeEach(() => {
+        backendlessServiceMock = sinon.stub(backendlessService, "aggregateTable");
+    })
+
+    afterEach(() => {
+        backendlessServiceMock.restore();
+    })
+
     it('Should be able to run to retrieve >= 100 SKU inbound records', () => {
-        let backendlessServiceMock = sinon.stub(backendlessService, "retrieveSKUInboundBySKUMatchingOID");
 
         let dataOf100 = () => {
             let result = [];
@@ -81,7 +89,7 @@ describe('BackendlessService.retrieveAllSKUInboundBySKUMatchingOID', () => {
         backendlessServiceMock.onFirstCall().returns(dataOf100());
         backendlessServiceMock.onSecondCall().returns(dataOf5());
 
-        backendlessService.retrieveAllSKUInboundBySKUMatchingOID('foo').then(res => {
+        backendlessService.calculateSKUInboundQty('foo').then(res => {
             expect(res.length).toBe(105);
         }).catch(err => {
             expect(err).toBe(null);
@@ -90,10 +98,17 @@ describe('BackendlessService.retrieveAllSKUInboundBySKUMatchingOID', () => {
 });
 
 
-describe('BackendlessService.retrieveAllSKUOutboundISGOrdersBySKUMatchingOID', () => {
-    it('Should be able to run to retrieve >= 100 SKU outbound ISGOrder records', () => {
-        let backendlessServiceMock = sinon.stub(backendlessService, "retrieveSKUOutboundISGOrdersBySKUMatchingOID");
+describe('BackendlessService.calculateSKUOutboundISGOrderQty', () => {
+    let backendlessServiceMock;
+    beforeEach(() => {
+        backendlessServiceMock = sinon.stub(backendlessService, "aggregateTable");
+    })
 
+    afterEach(() => {
+        backendlessServiceMock.restore();
+    })
+
+    it('Should be able to run to retrieve >= 100 SKU outbound ISGOrder records', () => {
         let dataOf100 = () => {
             let result = [];
 
@@ -123,7 +138,7 @@ describe('BackendlessService.retrieveAllSKUOutboundISGOrdersBySKUMatchingOID', (
         backendlessServiceMock.onFirstCall().returns(dataOf100());
         backendlessServiceMock.onSecondCall().returns(dataOf5());
 
-        backendlessService.retrieveAllSKUOutboundISGOrdersBySKUMatchingOID('foo').then(res => {
+        backendlessService.calculateSKUOutboundISGOrderQty('foo').then(res => {
             expect(res.length).toBe(105);
         }).catch(err => {
             expect(err).toBe(null);
@@ -133,9 +148,18 @@ describe('BackendlessService.retrieveAllSKUOutboundISGOrdersBySKUMatchingOID', (
 
 
 
-describe('BackendlessService.retrieveAllSKUOutboundBySKUMatchingOID', () => {
+describe('BackendlessService.calculateSKUOutboundQty', () => {
+    let backendlessServiceMock;
+    beforeEach(() => {
+        backendlessServiceMock = sinon.stub(backendlessService, "aggregateTable");
+    })
+
+    afterEach(() => {
+        backendlessServiceMock.restore();
+    })
+
     it('Should be able to run to retrieve >= 100 SKU outbound ISGOrder records', () => {
-        let backendlessServiceMock = sinon.stub(backendlessService, "retrieveSKUOutboundBySKUMatchingOID");
+        
 
         let dataOf100 = () => {
             let result = [];
@@ -166,10 +190,12 @@ describe('BackendlessService.retrieveAllSKUOutboundBySKUMatchingOID', () => {
         backendlessServiceMock.onFirstCall().returns(dataOf100());
         backendlessServiceMock.onSecondCall().returns(dataOf5());
 
-        backendlessService.retrieveAllSKUOutboundBySKUMatchingOID('foo').then(res => {
+        backendlessService.calculateSKUOutboundQty('foo').then(res => {
             expect(res.length).toBe(105);
         }).catch(err => {
             expect(err).toBe(null);
         })
+
+        backendlessServiceMock.restore();
     });
 });
