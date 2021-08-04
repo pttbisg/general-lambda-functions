@@ -4,6 +4,7 @@
 |Functions|URL|Description|
 |--------|--------|--------|
 |isgOrderSourceToASCMLogistics|/airtable/ascm-logistics|Populate Shopify order & delivery tracking data from PTTB:Outbound > ISGOrderSource|
+|getInventoryByUserID|/inventory|Retrieve inventory information by user ID|
 
 ## Development
 ### Pre-requisites
