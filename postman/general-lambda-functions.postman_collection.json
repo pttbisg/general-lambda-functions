@@ -81,7 +81,80 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"sent\",\n    \"warehouse\": \"HOMEX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws-url}}/sku_outbounds/:id/send_out",
+							"host": [
+								"{{aws-url}}"
+							],
+							"path": [
+								"sku_outbounds",
+								":id",
+								"send_out"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "029E3FC8-C162-4C29-BD70-E931D9BC8328"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "content-type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "vary",
+							"value": "origin"
+						},
+						{
+							"key": "access-control-allow-credentials",
+							"value": "true"
+						},
+						{
+							"key": "access-control-expose-headers",
+							"value": "WWW-Authenticate,Server-Authorization"
+						},
+						{
+							"key": "cache-control",
+							"value": "no-cache"
+						},
+						{
+							"key": "content-length",
+							"value": "37"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Aug 2021 16:52:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"sent\",\n    \"warehouse\": \"HOMEX\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Update SKU OutboundISGOrder Status",
@@ -98,9 +171,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{aws-offline-url}}/sku_outbound_isgorders/:id/send_out",
+					"raw": "{{aws-url}}/sku_outbound_isgorders/:id/send_out",
 					"host": [
-						"{{aws-offline-url}}"
+						"{{aws-url}}"
 					],
 					"path": [
 						"sku_outbound_isgorders",
@@ -110,7 +183,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "005C63E5-BC04-4C91-B9DA-2FFCD7A66EBD"
+							"value": "005141CB-4903-4D89-B6D4-3BCD2C75D7B5"
 						}
 					]
 				}
