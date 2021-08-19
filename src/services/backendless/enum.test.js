@@ -12,6 +12,10 @@ describe('BACKENDLESS', () => {
                 out: "",
             },
             {
+                in: BACKENDLESS.REST_KEY_PROD,
+                out: "",
+            },
+            {
                 in: BACKENDLESS.TABLE.SKUOutboundISGOrders,
                 out: "SKU_Outbound_ISGOrders",
             },

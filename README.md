@@ -5,6 +5,8 @@
 |--------|--------|--------|
 |isgOrderSourceToASCMLogistics|/airtable/ascm-logistics|Populate Shopify order & delivery tracking data from PTTB:Outbound > ISGOrderSource|
 |getInventoryByUserID|/inventory|Retrieve inventory information by user ID|
+|sendOutSKUOutbounds|/sku_outbounds/{sku_outbound_id}/send_out|Send out item from SKU_Outbound|
+|sendOutSKUOutboundISGOrders|/sku_outbound_isgorders/{sku_outbound_isgorder_id}/send_out|Send out item from SKU_OutboundISGOrder|
 
 ## Development
 ### Pre-requisites

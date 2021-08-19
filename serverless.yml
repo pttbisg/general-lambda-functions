@@ -13,6 +13,7 @@ provider:
     STAGE: ${opt:stage, 'dev'}
     BACKENDLESS_APP_KEY_PROD: ${env:BACKENDLESS_APP_KEY_PROD}
     BACKENDLESS_APP_ID_PROD: ${env:BACKENDLESS_APP_ID_PROD}
+    BACKENDLESS_REST_KEY_PROD: ${env:BACKENDLESS_REST_KEY_PROD}
     AIRTABLE_API_KEY: ${env:AIRTABLE_API_KEY}
   tracing:
     apiGateway: true
@@ -20,7 +21,7 @@ provider:
 
 functions:
   isgOrderSourceToASCMLogistics:
-    handler: airtable.isgOrderSourceToASCMLogistics
+    handler: src/airtable.isgOrderSourceToASCMLogistics
     events:
       - http:
           path: /airtable/ascm-logistics
@@ -28,10 +29,26 @@ functions:
           cors: true
 
   getInventoryByUserID:
-    handler: inventory.getInventoryByUserIDLambdaFunc
+    handler: src/inventory.getInventoryByUserIDLambdaFunc
     events:
       - http:
           path: /inventory
+          method: POST
+          cors: true
+
+  sendOutSKUOutbounds:
+    handler: src/sku_outbounds.sendOut
+    events:
+      - http:
+          path: /sku_outbounds/{sku_outbound_id}/send_out
+          method: POST
+          cors: true
+
+  sendOutSKUOutboundISGOrders:
+    handler: src/sku_outboundisgorders.sendOut
+    events:
+      - http:
+          path: /sku_outbound_isgorders/{sku_outbound_isgorder_id}/send_out
           method: POST
           cors: true
 

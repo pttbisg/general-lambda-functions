@@ -1,12 +1,7 @@
 "use strict";
 
-const axios = require('axios');
 const _ = require ("lodash");
 const assert = require("assert");
-
-const {
-    BackendlessService,
-} = require('../backendless');
 
 const {
     shard,
