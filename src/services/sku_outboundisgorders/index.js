@@ -163,7 +163,7 @@ class SKUOutboundISGOrderService {
             skuInboundStatusLOCRecords.push(skuInboundMetadata)
 
             _.merge(payload.body, {
-                "CurrentLocation": status,
+                "Status": status,
                 "Qty_new_left": qtyNewLeft,
                 "STATUS_LOC_Records": JSON.stringify(skuInboundStatusLOCRecords)
             });
