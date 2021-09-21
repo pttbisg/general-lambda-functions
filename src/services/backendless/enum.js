@@ -3,6 +3,7 @@
 const BACKENDLESS = {
     APP_ID_PROD: process.env.BACKENDLESS_APP_ID_PROD || "",
     APP_KEY_PROD: process.env.BACKENDLESS_APP_KEY_PROD || "",
+    REST_KEY_PROD: process.env.BACKENDLESS_REST_KEY_PROD || "",
     DEFAULT: {
         OFFSET: 0,
         PAGESIZE: 100,

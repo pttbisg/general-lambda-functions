@@ -3,6 +3,10 @@
 const axios = require("axios");
 const assert = require("assert");
 
+const BESKUOutboundService = require('./skuoutbound').BESKUOutboundService;
+const BESKUInboundService = require('./skuinbound').BESKUInboundService;
+const BESKUOutboundISGOrderService = require('./skuoutboundisgorders').BESKUOutboundISGOrderService;
+
 const { BACKENDLESS } = require('./enum');
 
 class BackendlessService {
@@ -36,7 +40,7 @@ class BackendlessService {
             method: "GET",
             url: `https://api.backendless.com/${BACKENDLESS.APP_ID_PROD}/${BACKENDLESS.APP_KEY_PROD}/data/${BACKENDLESS.TABLE.SKUMatching}?where=allowedUsers = '${objectID}'&pageSize=${pageSize}&offset=${offset}`,
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
         };
     
@@ -151,10 +155,112 @@ class BackendlessService {
         const res = await axios(requestPayload);
         return res.data;
     }
+
+    async updateAll(tableName, id, data) {
+        assert(typeof(tableName) === "string");
+        assert(typeof(id) === "string");
+        assert(typeof(data) === "object");
+
+        const requestPayload = {
+            method: "POST",
+            url: `https://api.backendless.com/${BACKENDLESS.APP_ID_PROD}/${BACKENDLESS.APP_KEY_PROD}/transaction/unit-of-work`,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            data: {
+                'isolationLevelEnum': 'READ_UNCOMMITTED',
+                'operations': [
+                    {
+                        'operationType': 'FIND',
+                        'table': tableName,
+                        "opResultId": "FIND-" + id,
+                        "payload": {
+                            "pageSize" : 1,
+                            "whereClause":`objectId = '${id}'`
+                        }
+                    }, {
+                        'operationType': 'UPDATE_BULK',
+                        'table': tableName,
+                        "opResultId": "UPDATE_BULK-" + id,
+                        'payload': {
+                            "unconditional" : {
+                                "___ref": true,
+                                "opResultId": "FIND-" + id,
+                            }, 
+                            "changes" : data,
+                        }
+                    }
+                ],
+            },
+        };
+
+        const res = await axios(requestPayload);
+        return res.data;
+    }
+
+    async addRelation(parentTable, relationTable, relationName, id, where) {
+        assert(typeof(parentTable) === "string");
+        assert(typeof(relationTable) === "string");
+        assert(typeof(relationName) === "string");
+        assert(typeof(id) === "string");
+        assert(typeof(where) === "string");
+
+        const requestPayload = {
+            method: "POST",
+            url: `https://api.backendless.com/${BACKENDLESS.APP_ID_PROD}/${BACKENDLESS.APP_KEY_PROD}/transaction/unit-of-work`,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            data: {
+                'isolationLevelEnum': 'READ_UNCOMMITTED',
+                'operations': [
+                    {
+                        'operationType': 'FIND',
+                        'table': parentTable,
+                        "opResultId": `FIND-${parentTable}-${id}`,
+                        "payload": {
+                            "pageSize" : 1,
+                            "whereClause":`objectId = '${id}'`
+                        }
+                    }, {
+                        'operationType': 'FIND',
+                        'table': relationTable,
+                        "opResultId": `FIND-${relationTable}`,
+                        "payload": {
+                            "whereClause": where
+                        }
+                    }, {
+                        'operationType': 'SET_RELATION',
+                        'table': parentTable,
+                        "opResultId": `SET_RELATION-${relationTable}-${id}`,
+                        'payload': {
+                            "parentObject": {
+                                "___ref": true,
+                                "opResultId": `FIND-${parentTable}-${id}`,
+                                "resultIndex" : 0,
+                                "propName" : "objectId"
+                            },
+                            "relationColumn": relationName,
+                            "unconditional" : {
+                                "___ref": true,
+                                "opResultId": `FIND-${relationTable}`,
+                            }, 
+                        }
+                    }
+                ],
+            },
+        };
+
+        const res = await axios(requestPayload);
+        return res.data;
+    }
 }
 
 
 
 module.exports = {
     BackendlessService,
+    BESKUOutboundService,
+    BESKUInboundService,
+    BESKUOutboundISGOrderService,
 }

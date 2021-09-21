@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "1c3dd710-8e5b-4485-98ee-4dae594da90e",
+		"name": "general-lambda-functions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Migrate ISGOrderSource > ASCM_Logistics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{aws-url}}/airtable/ascm-logistics",
+					"host": [
+						"{{aws-url}}"
+					],
+					"path": [
+						"airtable",
+						"ascm-logistics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get inventory by user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userObjectID\": \"76002D0C-46B9-48F7-AAFA-AB80D5EE7693\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aws-url}}/inventory",
+					"host": [
+						"{{aws-url}}"
+					],
+					"path": [
+						"inventory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update SKU Outbound Status",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"sent\",\n    \"warehouse\": \"HOMEX\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aws-url}}/sku_outbounds/:id/send_out",
+					"host": [
+						"{{aws-url}}"
+					],
+					"path": [
+						"sku_outbounds",
+						":id",
+						"send_out"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "029E3FC8-C162-4C29-BD70-E931D9BC8328"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"sent\",\n    \"warehouse\": \"HOMEX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws-url}}/sku_outbounds/:id/send_out",
+							"host": [
+								"{{aws-url}}"
+							],
+							"path": [
+								"sku_outbounds",
+								":id",
+								"send_out"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "029E3FC8-C162-4C29-BD70-E931D9BC8328"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "content-type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "vary",
+							"value": "origin"
+						},
+						{
+							"key": "access-control-allow-credentials",
+							"value": "true"
+						},
+						{
+							"key": "access-control-expose-headers",
+							"value": "WWW-Authenticate,Server-Authorization"
+						},
+						{
+							"key": "cache-control",
+							"value": "no-cache"
+						},
+						{
+							"key": "content-length",
+							"value": "37"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Aug 2021 16:52:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"sent\",\n    \"warehouse\": \"HOMEX\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Update SKU OutboundISGOrder Status",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"\",\n    \"warehouse\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aws-url}}/sku_outbound_isgorders/:id/send_out",
+					"host": [
+						"{{aws-url}}"
+					],
+					"path": [
+						"sku_outbound_isgorders",
+						":id",
+						"send_out"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "005141CB-4903-4D89-B6D4-3BCD2C75D7B5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
