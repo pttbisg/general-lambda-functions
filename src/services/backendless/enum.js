@@ -13,6 +13,7 @@ const BACKENDLESS = {
         SKUInbound: "SKU_Inbound",
         SKUOutbound: "SKU_Outbound",
         SKUOutboundISGOrders: "SKU_Outbound_ISGOrders",
+        POCBackendlessToAirtable: "test_backendless_airtable",
     },
 }
 

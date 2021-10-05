@@ -6,6 +6,7 @@ const assert = require("assert");
 const BESKUOutboundService = require('./skuoutbound').BESKUOutboundService;
 const BESKUInboundService = require('./skuinbound').BESKUInboundService;
 const BESKUOutboundISGOrderService = require('./skuoutboundisgorders').BESKUOutboundISGOrderService;
+const POCBackendlessToAirtableService = require('./poc_backendless_to_airtable').POCBackendlessToAirtableService;
 
 const { BACKENDLESS } = require('./enum');
 
@@ -263,4 +264,5 @@ module.exports = {
     BESKUOutboundService,
     BESKUInboundService,
     BESKUOutboundISGOrderService,
+    POCBackendlessToAirtableService,
 }
