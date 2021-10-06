@@ -31,7 +31,7 @@ const insert = async(event) => {
         await dynamoDBService.insert(beRes, EVENT.EVENT_TYPE.CREATE);
 
         resStatus = 201;
-        resBody = beRes;
+        resBody = JSON.stringify(beRes);
     } catch(err) {
         console.log(err);
         console.error(err.toJSON());
@@ -77,7 +77,7 @@ const update = async(event) => {
         await dynamoDBService.insert(beRes, EVENT.EVENT_TYPE.UPDATE);
 
         resStatus = 200;
-        resBody = beRes;
+        resBody = JSON.stringify(beRes);
     } catch(err) {
         console.log(err);
         console.error(err.toJSON());
