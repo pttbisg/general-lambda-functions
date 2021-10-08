@@ -5,9 +5,11 @@ const _ = require('lodash');
 const { POCBackendlessToAirtableService } = require('./services/backendless');
 const { DynamoDBService } = require('./services/dynamodb');
 const { EVENT } = require('./services/dynamodb/enum');
+const { AirtableTestAirtableBackendlessService } = require('./services/airtable');
 
 const pocService = new POCBackendlessToAirtableService();
 const dynamoDBService = new DynamoDBService();
+const airtableService = new AirtableTestAirtableBackendlessService();
 
 
 const insert = async(event) => {
@@ -28,7 +30,8 @@ const insert = async(event) => {
             body.singleSelectColumn, body.stringColumn,
         ));
 
-        await dynamoDBService.insert(beRes, EVENT.EVENT_TYPE.CREATE);
+        const airtablePayload = airtableService.buildInsertPayload(beRes);
+        await dynamoDBService.insert(airtablePayload, EVENT.EVENT_TYPE.CREATE);
 
         resStatus = 201;
         resBody = JSON.stringify(beRes);
@@ -74,7 +77,10 @@ const update = async(event) => {
             body.singleSelectColumn, body.stringColumn,
         ));
 
-        await dynamoDBService.insert(beRes, EVENT.EVENT_TYPE.UPDATE);
+        if(beRes['airtable_id'] !== null) {
+            const airtablePayload = airtableService.buildUpdatePayload(beRes);
+            await dynamoDBService.insert(airtablePayload, EVENT.EVENT_TYPE.UPDATE);
+        }
 
         resStatus = 200;
         resBody = JSON.stringify(beRes);
@@ -114,7 +120,10 @@ const soft_delete = async(event) => {
 
         const beRes = await pocService.softDelete(id);
 
-        await dynamoDBService.insert(beRes, EVENT.EVENT_TYPE.SOFT_DELETE);
+        if(beRes['airtable_id'] !== null) {
+            const airtablePayload = airtableService.buildSoftDeletePayload(beRes);
+            await dynamoDBService.insert(airtablePayload, EVENT.EVENT_TYPE.SOFT_DELETE);
+        }
 
         resStatus = 204;
     } catch(err) {
