@@ -25,6 +25,7 @@ class DynamoDBService {
                 event_type: eventType,
                 event_payload: JSON.stringify(items),
                 is_origin_from_be: true,
+                is_migrated: false,
             },
         }
 
