@@ -26,7 +26,7 @@ const insert = async(event) => {
 
         const beRes = await pocService.insert(pocService.buildBackendlessPayload(
             body.booleanColumn, body.dateColumn, body.formulaColumn, 
-            body.multipleSelectColumn, body.numberColumn, body.phoneColumn, 
+            body.numberColumn, body.phoneColumn, 
             body.singleSelectColumn, body.stringColumn,
         ));
 
@@ -73,7 +73,7 @@ const update = async(event) => {
 
         const beRes = await pocService.update(id, pocService.buildBackendlessPayload(
             body.booleanColumn, body.dateColumn, body.formulaColumn, 
-            body.multipleSelectColumn, body.numberColumn, body.phoneColumn, 
+            body.numberColumn, body.phoneColumn, 
             body.singleSelectColumn, body.stringColumn,
         ));
 

@@ -5,13 +5,12 @@ const axios = require("axios");
 const { BACKENDLESS } = require("./enum");
 
 class POCBackendlessToAirtableService {
-    buildBackendlessPayload(booleanColumn, dateColumn, formulaColumn, multipleSelectColumn, numberColumn, phoneColumn, singleSelectColumn, stringColumn, objectID, ownerID, created, updated, deleted, ) {
+    buildBackendlessPayload(booleanColumn, dateColumn, formulaColumn, numberColumn, phoneColumn, singleSelectColumn, stringColumn, objectID, ownerID, created, updated, deleted, ) {
         let res = {};
 
         if(booleanColumn != null) { res['boolean_column'] = booleanColumn };
         if(dateColumn) { res['date_column'] = dateColumn };
         if(formulaColumn) { res['formula_column'] =  parseFloat(formulaColumn) };
-        if(multipleSelectColumn) { res['multiple_select_column'] = JSON.stringify(multipleSelectColumn) };
         if(numberColumn) { res['number_column'] = parseFloat(numberColumn) };
         if(phoneColumn) { res['phone_column'] = phoneColumn };
         if(singleSelectColumn) { res['single_select_column'] = singleSelectColumn };

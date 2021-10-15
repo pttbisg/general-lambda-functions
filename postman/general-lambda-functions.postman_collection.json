@@ -27,7 +27,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"booleanColumn\": true,\n    \"dateColumn\": \"{{currentDate}}\",\n    \"formulaColumn\": 2,\n    \"multipleSelectColumn\": [\"Option A\", \"New Option\"],\n    \"numberColumn\": 1,\n    \"phoneColumn\": \"+621234567890\",\n    \"singleSelectColumn\": \"Another new option\",\n    \"stringColumn\": \"string\"\n}",
+							"raw": "{\n    \"booleanColumn\": true,\n    \"dateColumn\": \"{{currentDate}}\",\n    \"formulaColumn\": 2,\n    \"numberColumn\": 1,\n    \"phoneColumn\": \"+621234567890\",\n    \"singleSelectColumn\": \"Another new option\",\n    \"stringColumn\": \"string\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

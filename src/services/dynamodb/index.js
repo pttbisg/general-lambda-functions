@@ -16,10 +16,13 @@ class DynamoDBService {
     }
 
     async insert(items, eventType) {
+        const id = uuidv4();
+
         const params = {
             TableName: AWS.DYNAMODB.AIRTABLE_BE_EVENTS,
             Item: {
-                id: uuidv4(),
+                id: id,
+                index_id: id,
                 created: new Date().toISOString(),
                 event_from: EVENT.FROM.BACKENDLESS,
                 event_type: eventType,
