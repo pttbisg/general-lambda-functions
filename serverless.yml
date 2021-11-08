@@ -52,6 +52,30 @@ functions:
           method: POST
           cors: true
 
+  pocBackendlessToAirtableInsert:
+      handler: src/poc_backendless_to_airtable.insert
+      events:
+        - http:
+            path: /poc/backendless-to-airtable/insert
+            method: POST
+            cors: true
+
+  pocBackendlessToAirtableUpdate:
+      handler: src/poc_backendless_to_airtable.update
+      events:
+        - http:
+            path: /poc/backendless-to-airtable/update/{id}
+            method: PUT
+            cors: true
+
+  pocBackendlessToAirtableDELETE:
+      handler: src/poc_backendless_to_airtable.soft_delete
+      events:
+        - http:
+            path: /poc/backendless-to-airtable/soft-delete/{id}
+            method: DELETE
+            cors: true
+
 plugins:
   - serverless-offline
   - serverless-dotenv-plugin

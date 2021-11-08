@@ -245,6 +245,78 @@ class AirtablePTTBOutboundMainShopifyOrdersService {
   }
 }
 
+class AirtableTestAirtableBackendlessService {
+  constructor() {
+    this.baseID = AIRTABLE.PTTBOutbound.ID;
+    this.tableName = AIRTABLE.PTTBOutbound.TABLE.TestAirtableBackendless;
+  }
+
+  buildInsertPayload(data) {
+    return {
+      "records": [
+        {
+          "fields": {
+            "Is From BE": true,
+            "String Column": data['string_column'],
+            "Boolean Column": data['boolean_column'],
+            "Single Select Column": data['single_select_column'],
+            "Date Column": new Date(data['date_column']),
+            "Phone Number Column": data['phone_column'],
+            "Number Column": data['number_column'],
+            "Formula Column": data['formula_column'],
+            "Created At": new Date(data['created']),
+            "Object ID": data['objectId'],
+          }
+        }
+      ]
+    }
+  }
+
+  buildUpdatePayload(data) {
+    return {
+      "records": [
+        {
+          "id": data["airtable_id"],
+          "fields": {
+            "Is From BE": true,
+            "String Column": data['string_column'],
+            "Boolean Column": data['boolean_column'],
+            "Single Select Column": data['single_select_column'],
+            "Date Column": new Date(data['date_column']),
+            "Phone Number Column": data['phone_column'],
+            "Number Column": data['number_column'],
+            "Formula Column": data['formula_column'],
+            "Object ID": data['objectId'],
+          }
+        }
+      ]
+    }
+  }
+
+  buildSoftDeletePayload(data) {
+    return {
+      "records": [
+        {
+          "id": data["airtable_id"],
+          "fields": {
+            "Is From BE": true,
+            "String Column": data['string_column'],
+            "Boolean Column": data['boolean_column'],
+            "Single Select Column": data['single_select_column'],
+            "Date Column": new Date(data['date_column']),
+            "Phone Number Column": data['phone_column'],
+            "Number Column": data['number_column'],
+            "Formula Column": data['formula_column'],
+            "Object ID": data['objectId'],
+            "Deleted At (BE)": new Date(data['deleted'])
+          }
+        }
+      ]
+    }
+  }
+}
+
 module.exports = {
   AirtablePTTBOutboundMainShopifyOrdersService,
+  AirtableTestAirtableBackendlessService,
 };
