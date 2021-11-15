@@ -76,6 +76,66 @@ functions:
             method: DELETE
             cors: true
 
+  beToAuroraMigrator:
+    handler: src/be_to_aurora.ping
+    events:
+      - http:
+          path: /be_to_aurora_serverless/ping
+          method: GET
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-878af1ca
+      subnetIds:
+        - subnet-554ee81d
+        - subnet-5595f80c
+        - subnet-490bbd2f
+
+  migrationUp:
+    handler: src/migration.up
+    events:
+      - http:
+          path: /migration/up
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-878af1ca
+      subnetIds:
+        - subnet-554ee81d
+        - subnet-5595f80c
+        - subnet-490bbd2f
+
+  migrationForce:
+    handler: src/migration.force
+    events:
+      - http:
+          path: /migration/force/{version}
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-878af1ca
+      subnetIds:
+        - subnet-554ee81d
+        - subnet-5595f80c
+        - subnet-490bbd2f
+
+  migrationGoto:
+    handler: src/migration.goto
+    events:
+      - http:
+          path: /migration/goto/{version}
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-878af1ca
+      subnetIds:
+        - subnet-554ee81d
+        - subnet-5595f80c
+        - subnet-490bbd2f
+
 plugins:
   - serverless-offline
   - serverless-dotenv-plugin
