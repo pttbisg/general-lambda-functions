@@ -11,6 +11,11 @@ axiosRetry(axios, {
 
 const { AIRTABLE } = require("./enum");
 
+const { AirtableOutboundAscmSkusService } = require('./pttb_outbound_ascmskus');
+const { AirtableSKUMatchingService } = require('./sku_matching');
+const { AirtableOutboundShopeeOrdersService } = require('./pttb_outbound_shopeeorders');
+const { AirtableOutboundShopifyOrdersService } = require('./pttb_outbounds_shopifyorders');
+
 class AirtablePTTBOutboundMainShopifyOrdersService {
   constructor() {
     this.baseID = AIRTABLE.PTTBOutbound.ID;
@@ -319,4 +324,8 @@ class AirtableTestAirtableBackendlessService {
 module.exports = {
   AirtablePTTBOutboundMainShopifyOrdersService,
   AirtableTestAirtableBackendlessService,
+  AirtableOutboundAscmSkusService,
+  AirtableSKUMatchingService,
+  AirtableOutboundShopeeOrdersService,
+  AirtableOutboundShopifyOrdersService,
 };

@@ -14,6 +14,11 @@ const BACKENDLESS = {
         SKUOutbound: "SKU_Outbound",
         SKUOutboundISGOrders: "SKU_Outbound_ISGOrders",
         POCBackendlessToAirtable: "test_backendless_airtable",
+        SKULocal: "SKU_localSKU",
+        OutboundsASCMSkus: "PTTBOutbounds_ASCMSKUS",
+        OutboundsShopeeOrders: "PTTBOutbounds_ShopeeOrders",
+        OutboundsShopifyOrders: "PTTBOutbounds_ShopifyOrders",
+        HelpwiseConversations: "Helpwise_conversations",
     },
 }
 
