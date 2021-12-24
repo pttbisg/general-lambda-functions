@@ -13,7 +13,7 @@ create table if not exists sku_matching
     ignore_store_name text,
     isolation_level_enum text,
     item_name text,
-    masker_sku text,
+    master_sku text,
     variant_id text
 );
 

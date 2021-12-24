@@ -15,7 +15,7 @@ begin;
         receiver text,
         sender text,
         status text,
-        tag uuid
+        tag text
     );
     
 commit;
