@@ -7,11 +7,23 @@ const AIRTABLE = {
         TABLE: {
             MainShopifyOrders: "Main Shopify Orders (PTTB)",
             ISGOrderSource: "ISGOrderSource",
-            ASCMLogistics: "ASCM_Logistics",
             TestAirtableBackendless: "test_airtable_backendless",
         }
     },
+    ShopifyUrbanFox: {
+        ID: "appfmhpqL53IXwBzk",
+        TABLE: {
+            AscmSKUs: "ASCM_SKUs",
+            ShopeeOrders: "Shopee Orders",
+            ShopifyOrders: "New ISG Orders Table", // not found
+            LazadaOrders: "Lazada Orders",
+            SKULocal: "SKU_localSKU", // not found
+            SKUMatching: "MasterSKU%20(Synced)", // not found
+        }
+
+    },
     DEFAULT_DELAYER_MS: 200,
+    DEFAULT_MAX_RECORD: 1,
 };
 
 module.exports = {

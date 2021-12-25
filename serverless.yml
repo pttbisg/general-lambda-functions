@@ -7,7 +7,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: '20201221'
-  region: us-west-2
+  region: ap-southeast-1
   timeout: 600
   environment:
     STAGE: ${opt:stage, 'dev'}
@@ -15,9 +15,18 @@ provider:
     BACKENDLESS_APP_ID_PROD: ${env:BACKENDLESS_APP_ID_PROD}
     BACKENDLESS_REST_KEY_PROD: ${env:BACKENDLESS_REST_KEY_PROD}
     AIRTABLE_API_KEY: ${env:AIRTABLE_API_KEY}
+    URL: ${env:URL}
   tracing:
     apiGateway: true
     lambda: true
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+      - "sqs:ReceiveMessage"
+      - "sqs:DeleteMessage"
+      - "sqs:GetQueueAttributes"
+      - "sqs:SendMessage"
+      Resource: "*"
 
 functions:
   isgOrderSourceToASCMLogistics:
@@ -75,6 +84,223 @@ functions:
             path: /poc/backendless-to-airtable/soft-delete/{id}
             method: DELETE
             cors: true
+
+  pingAurora:
+    handler: src/be_to_aurora.ping
+    events:
+      - http:
+          path: /be_to_aurora_serverless/ping
+          method: GET
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  pingInternet:
+    handler: src/be_to_aurora.pingInternet
+    events:
+      - http:
+          path: /be_to_aurora_serverless/ping/internet
+          method: GET
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migrationUp:
+    handler: src/migration.up
+    events:
+      - http:
+          path: /migration/up
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migrationForce:
+    handler: src/migration.force
+    events:
+      - http:
+          path: /migration/force/{version}
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migrationGoto:
+    handler: src/migration.goto
+    events:
+      - http:
+          path: /migration/goto/{version}
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migrateSkuMatching:
+    handler: src/be_to_aurora.migrateSKUMatching
+    events:
+      - http:
+          path: /backendless/migrate/sku_matching
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migratePTTBOutboundsASCMSkus:
+    handler: src/be_to_aurora.migratePTTBOutboundsASCMSkus
+    events:
+      - http:
+          path: /backendless/migrate/outbounds_ascm_skus
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migrateHelpwiseConversations:
+    handler: src/be_to_aurora.migrateHelpwiseConversations
+    events:
+      - http:
+          path: /backendless/migrate/helpwise_conversations
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migratePTTBOutboundsShopeeOrders:
+    handler: src/be_to_aurora.migratePTTBOutboundsShopeeOrders
+    events:
+      - http:
+          path: /backendless/migrate/pttb_outbounds_shopee_orders
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migratePTTBOutboundsShopifyOrders:
+    handler: src/be_to_aurora.migratePTTBOutboundsShopifyOrders
+    events:
+      - http:
+          path: /backendless/migrate/pttb_outbounds_shopify_orders
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migrateLocalSKU:
+    handler: src/be_to_aurora.migrateLocalSKU
+    events:
+      - http:
+          path: /backendless/migrate/local_sku
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  airtableMigratePTTBOutboundsASCMSku:
+    handler: src/airtable_to_aurora.migratePTTBOutboundsASCMSkus
+    events:
+      - http:
+          path: /airtable/migrate/outbounds_ascm_skus
+          method: POST
+          cors: true
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migrateLazadaOrders:
+    handler: src/airtable_to_aurora.migrateLazadaOrders
+    reservedConcurrency: 100
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+
+  migrateShopeeOrders:
+    handler: src/airtable_to_aurora.migrateShopeeOrders
+    reservedConcurrency: 100
+    vpc:
+      securityGroupIds:
+        - sg-021fbf100232adedd
+      subnetIds:
+        - subnet-0cefc6a5b63ef9d97
+        - subnet-061d65ea4ffcca9c5
+        - subnet-02339cdc891837324
+        - subnet-02ec30d045c7317c9
+    
 
 plugins:
   - serverless-offline

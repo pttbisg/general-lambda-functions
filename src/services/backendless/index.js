@@ -7,6 +7,12 @@ const BESKUOutboundService = require('./skuoutbound').BESKUOutboundService;
 const BESKUInboundService = require('./skuinbound').BESKUInboundService;
 const BESKUOutboundISGOrderService = require('./skuoutboundisgorders').BESKUOutboundISGOrderService;
 const POCBackendlessToAirtableService = require('./poc_backendless_to_airtable').POCBackendlessToAirtableService;
+const SKUMatchingService = require('./sku_matching').SKUMatchingService;
+const HelpwiseConversationsService = require('./helpwise_conversations').HelpwiseConversationsService;
+const PTTBOutboundsShopeeOrdersService = require('./pttb_outbound_shopeeorders').PTTBOutboundsShopeeOrdersService;
+const PTTBOutboundsShopifyOrdersService = require('./pttb_outbounds_shopifyorders').PTTBOutboundsShopifyOrdersService;
+const PTTBOutboundsAscmSkusService = require('./pttb_outbound_ascmskus').PTTBOutboundsAscmSkusService;
+const LocalSKUService = require('./sku_localsku').LocalSKUService;
 
 const { BACKENDLESS } = require('./enum');
 
@@ -265,4 +271,10 @@ module.exports = {
     BESKUInboundService,
     BESKUOutboundISGOrderService,
     POCBackendlessToAirtableService,
+    SKUMatchingService,
+    HelpwiseConversationsService,
+    PTTBOutboundsShopeeOrdersService,
+    PTTBOutboundsShopifyOrdersService,
+    PTTBOutboundsAscmSkusService,
+    LocalSKUService,
 }

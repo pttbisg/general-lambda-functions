@@ -165,6 +165,79 @@
 			]
 		},
 		{
+			"name": "Migration",
+			"item": [
+				{
+					"name": "Up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{aws-url}}/migration/up",
+							"host": [
+								"{{aws-url}}"
+							],
+							"path": [
+								"migration",
+								"up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Force",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{aws-url}}/migration/force/:version",
+							"host": [
+								"{{aws-url}}"
+							],
+							"path": [
+								"migration",
+								"force",
+								":version"
+							],
+							"variable": [
+								{
+									"key": "version",
+									"value": "20211109140514"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Goto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{aws-url}}/migration/goto/:version",
+							"host": [
+								"{{aws-url}}"
+							],
+							"path": [
+								"migration",
+								"goto",
+								":version"
+							],
+							"variable": [
+								{
+									"key": "version",
+									"value": "20211109140514"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Migrate ISGOrderSource > ASCM_Logistics",
 			"request": {
 				"method": "GET",
